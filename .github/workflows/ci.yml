@@ -33,11 +33,20 @@ jobs:
           echo "main.py:"
           ls -l main.py
 
+      - name: Debug project
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Files:"
+          find . -maxdepth 2 -type f
+          echo "Checking main.py:"
+          ls -l main.py
+          echo "Python path:"
+          python -c "import sys; print('\n'.join(sys.path))"
+
       - name: Run tests
         env:
           PYTHONPATH: ${{ github.workspace }}
         run: |
-          pwd
-          ls -la
-          python -c "from main import app; print('main.py imported successfully')"
+          python -c "from main import app; print('SUCCESS: main.py imported')"
           python -m pytest
