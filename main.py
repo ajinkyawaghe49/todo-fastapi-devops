@@ -42,7 +42,7 @@ todos = [
 @app.get("/")
 def home():
     return {
-        "message": "TODO Application is running"
+        "message": "Welcome to DevOps TODO Application"
     }
 
 

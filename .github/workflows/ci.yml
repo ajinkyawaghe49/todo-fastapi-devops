@@ -1,0 +1,52 @@
+name: FastAPI CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check files
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Project files:"
+          ls -la
+          echo "main.py:"
+          ls -l main.py
+
+      - name: Debug project
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Files:"
+          find . -maxdepth 2 -type f
+          echo "Checking main.py:"
+          ls -l main.py
+          echo "Python path:"
+          python -c "import sys; print('\n'.join(sys.path))"
+
+      - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: |
+          python -c "from main import app; print('SUCCESS: main.py imported')"
+          python -m pytest
