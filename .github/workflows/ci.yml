@@ -25,7 +25,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements.txt
+          python -m pip check
 
       - name: Check files
         run: |
@@ -47,22 +48,6 @@ jobs:
           echo "Python path:"
           python -c "import sys; print('\n'.join(sys.path))"
 
-       - name: Run tests
+      - name: Run tests
         run: |
-          echo "=== Current directory ==="
-          pwd
-
-          echo "=== Repository files ==="
-          find . -maxdepth 2 -type f | sort
-
-          echo "=== Check main.py ==="
-          test -f ./main.py && echo "main.py FOUND" || echo "main.py NOT FOUND"
-
-          echo "=== Python path ==="
-          python -c "import sys; print('\n'.join(sys.path))"
-
-          echo "=== Import main.py ==="
-          PYTHONPATH="$GITHUB_WORKSPACE" python -c "import main; print(main.__file__)"
-
-          echo "=== Run pytest ==="
-          PYTHONPATH="$GITHUB_WORKSPACE" python -m pytest -v
+          python -m pytest -vv
